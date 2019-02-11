@@ -6,7 +6,7 @@
 /*   By: jziemann <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/01 23:01:19 by jziemann          #+#    #+#             */
-/*   Updated: 2019/02/07 19:48:36 by jziemann         ###   ########.fr       */
+/*   Updated: 2019/02/08 12:29:48 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,23 @@ void            (*pars_fun[14])(t_vap_data_t *a) =
 	pars_space
 };
 
- char            *ft_find_type(char *str)
+char			*ft_find_type(char *str)
 {
-	char    *itr;
-	char    i;
-	char    j;
-	char	*flag;
+	char	*itr;
 
-	i = 1;
-	itr = str;
-	while (str[i] && (flag = ft_strchr(FLAGS, str[i])))
+	while (ft_strchr(FLAGS, *str))
 	{
-		if (str[i] == '$')
+
+		if (*str == '$')
 		{
-			j = i - 1;
-			while (itr[j] == '0')
-				--j;
-			if (!ft_isdigit(itr[j]) && itr[j] != '*')
+			itr = str - 1;
+			while (*itr == '0')
+				--itr;
+			if (!ft_isdigit(*itr) && *itr != '*')
 				break;
 		}
-		i++;
+		str++;
 	}
-	(!flag) ? (str += 0) : (str += i);
 	return (str);
 }
 
@@ -75,6 +70,8 @@ t_vap_data_t    *ft_make_vaplist(char *str)
 		node->start = str;
 		itr = ft_find_type(++str); 
 		node->type = *itr;
+		if (*itr == 'f')
+			node->dot = 6;
 		node->flags = ft_strsub(str, 0, itr++ - str); // TODO
 		str = itr;
 		node->finish = itr;

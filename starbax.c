@@ -30,13 +30,24 @@ void			bax_indexator(t_vap_data_t *node, int i)
 	node->bax = i;
 	if (!(node = node->next))
 		return ;
-	while (!ft_strchr(node->flags, '$'))
+	//while (!ft_strchr(node->flags, '$'))
+	while (node->bax == 0)
 	{
 		//node->bax = ++i;
 		if (!node->f_star)
 			node->bax = ++i;
-		if (!(node = node->next))
-			return ;
+		if (!(/*node = */node->next))
+		{
+			//return ;
+			while (node->ind < i)
+			{
+				create_bax_nod(&node);
+				if (!(node = node->next))
+					return ;
+			}
+		}
+		else
+			node = node->next;
 	}
 }
 
@@ -52,9 +63,6 @@ void			pars_bax(t_vap_data_t *node)
 		++(node->flags);
 	if (*(node->flags) == '$')
 	{
-/*		size_flags[0] = (node->size_flags)[0];
-		size_flags[1] = (node->size_flags)[1];
-		size_flags[2] = (node->size_flags)[2];*/
 		bax_indexator(node, n);
 		++(node->flags);
 		while (node->ind < n)
@@ -65,12 +73,7 @@ void			pars_bax(t_vap_data_t *node)
 				create_bax_nod(&node);
 		}
 		if (!node->f_star)
-		{
-/*			(node->size_flags)[0] = size_flags[0];
-			(node->size_flags)[1] = size_flags[1];
-			(node->size_flags)[2] = size_flags[2];*/
 			node->type = type;
-		}
 	}
 	else
 		node->width = n;

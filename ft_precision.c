@@ -6,7 +6,7 @@
 /*   By: jziemann <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/01 23:12:48 by jziemann          #+#    #+#             */
-/*   Updated: 2019/02/01 23:13:46 by jziemann         ###   ########.fr       */
+/*   Updated: 2019/02/08 12:37:30 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,6 @@ void            pars_dot(t_vap_data_t *node)
 		return ;
 	}
 	node->dot = ft_atoi(node->flags);
+	while (ft_isdigit(*(node->flags)))
+		++(node->flags);
 }

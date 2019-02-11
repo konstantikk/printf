@@ -22,9 +22,20 @@
 
 extern char		*g_flags;
 
+typedef union	u_cast
+{
+	long double	F;
+	double		f;
+	long		l;
+	void		*p;
+	int 		i;
+	short		h;
+	char		c;
+}				t_cast;
+
 typedef struct	s_vap_data_s
 {
-	void				*data;
+	t_cast				*data;
 	char				*pr_data;
 	char				*flags;
 	char				*start;
@@ -64,5 +75,8 @@ t_vap_data_t	*ft_make_vaplist(char *str);
 void			pars_flags(t_vap_data_t *begin);
 void			check_bax(t_vap_data_t *node);
 char			*ft_find_type(char *str);
-//void            (*pars_fun[14])(t_vap_data_t *a);
+char			*itoa_base(long long n, char type);
+long			ft_dvigai_tochku(long double n, int dot, int *intlen);
+char			*ftoa(long n, int dot, int intlen);
+
 #endif

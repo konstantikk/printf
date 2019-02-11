@@ -6,7 +6,7 @@
 /*   By: jziemann <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/01 22:46:19 by jziemann          #+#    #+#             */
-/*   Updated: 2019/02/01 22:50:10 by jziemann         ###   ########.fr       */
+/*   Updated: 2019/02/08 12:30:57 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ void            pars_plus(t_vap_data_t *node)
 void            pars_zero(t_vap_data_t *node)// modif for type diouxX
 {
 	if (!node->f_zero && !node->f_minus)
-		++(node->f_zero);
-	if (node->f_dot && ft_strchr("diouxX", node->type))
 		++(node->f_zero);
 	++(node->flags);
 }
