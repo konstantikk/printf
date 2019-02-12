@@ -6,7 +6,7 @@
 /*   By: jziemann <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 16:49:31 by jziemann          #+#    #+#             */
-/*   Updated: 2019/02/11 19:23:04 by jziemann         ###   ########.fr       */
+/*   Updated: 2019/02/12 23:19:13 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	find_base(char type)
 		return (8);
 }
 
-static int	count_digits(long long n, int base)
+static int	count_digits(unsigned long n, int base)
 {
 	int	count;
 
@@ -37,28 +37,66 @@ static int	count_digits(long long n, int base)
 	return (count);
 }
 
-char		*itoa_base(long long n, char type)
+char		*itoa_base(unsigned long n, char type, int f)
 {
 	char	*str;
 	int		base;
 	size_t	len;
 	char	l;
 
+	//f && n < 0 ?  : :
 	base = find_base(type);
 	len = (size_t)count_digits(n, base);
-	str = (n < 0) ? ft_strnew(len + 1) : ft_strnew(len);
-	if (!n)
-		str[0] = '0';
+	str = (f) ? ft_strnew(len + 1) : ft_strnew(len);
 	if (!str)
 		return (NULL);
+	if (!n)
+		str[0] = '0';
 	l = (char)(type == 'x' ? 'a' : 'A');
-	if (n < 0 && (n = -n))
-		if ((type == 'd' || type == 'i') && (str[0] = '-'))
-			len++;
+	if (f  && (str[0] = '-'))
+		len++;
 	while (n)
 	{
 		str[--len] = (char)(n % base < 10 ? n % base + '0' : n % base % 10 + l);
 		n = n / base;
 	}
 	return (str);
+}
+
+void        pr_data_for_nbr(t_vap_data_t *node)////HATEEEEEEE new union
+{
+	int f;
+
+	f = 0;
+	if (node->type == 'i' || node->type == 'd')//////////////////////////////////////////////////////////
+	{
+		if ((node->size_flags)[1])
+		{		if (node->data->l < 0 && (node->data->l = -node->data->l))
+					f = 1;
+			node->pr_data = itoa_base(node->data->l, node->type, f);
+		}
+		else if ((node->size_flags)[0])
+		{
+			if ((node->size_flags)[0] % 2 && node->data->c < 0 && (node->data->c = -node->data->c))
+				f = 1;
+			else if (node->data->h < 0 && (node->data->h = -node->data->h))
+				f = 1;
+			node->pr_data = itoa_base((node->size_flags)[0] % 2 ? node->data->h : node->data->c, node->type, f);
+		}
+		else
+		{
+			if (node->data->i < 0 && (node->data->i = -node->data->i))
+				f = 1;
+			node->pr_data = itoa_base(node->data->i, node->type, f);
+		}
+	}
+	else
+	{
+		if ((node->size_flags)[1])
+			 node->pr_data = itoa_base(node->data->ul, node->type, f);
+		 else if ((node->size_flags)[0])
+			 node->pr_data = itoa_base((node->size_flags)[0] % 2 ? node->data->uh : node->data->uc, node->type, f);
+		 else
+			 node->pr_data = itoa_base(node->data->ui, node->type, f);
+	}
 }

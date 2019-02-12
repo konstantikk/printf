@@ -6,13 +6,13 @@
 /*   By: bmiklaz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/24 20:46:52 by bmiklaz           #+#    #+#             */
-/*   Updated: 2019/02/07 21:33:48 by jziemann         ###   ########.fr       */
+/*   Updated: 2019/02/12 23:24:43 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void			read_pr_va_list(t_vap_data_t *begin, va_list args) //TODO
+/*void			read_pr_va_list(t_vap_data_t *begin, va_list args) //TODO
 {
 	while (begin)
 	{
@@ -38,13 +38,13 @@ void			read_pr_va_list(t_vap_data_t *begin, va_list args) //TODO
 		if (ft_strchr("ouxX", begin->type))
 		{
 			if ((begin->size_flags)[1])
-				begin->data->l = va_arg(args, unsigned long);
+				begin->data->ul = va_arg(args, unsigned long);
 			else if ((begin->size_flags)[0] % 2)
-				begin->data->h = va_arg(args, unsigned short);
+				begin->data->uh = va_arg(args, unsigned short);
 			else if ((begin->size_flags)[0])
-				begin->data->c = va_arg(args, unsigned char);
+				begin->data->uc = va_arg(args, unsigned char);
 			else
-				begin->data->i = va_arg(args, unsigned int);
+				begin->data->ui = va_arg(args, unsigned int);
 		}
 		if (ft_strchr("DOU", begin->type))
 			begin->data->l = va_arg(args, long);
@@ -57,7 +57,7 @@ void			read_pr_va_list(t_vap_data_t *begin, va_list args) //TODO
 	begin = begin->next;
 	}
 }
-
+*/
 int			take_val(t_vap_data_t *begin, int i)
 {
 	while (begin->ind != i)
@@ -65,7 +65,7 @@ int			take_val(t_vap_data_t *begin, int i)
 	return (begin->data->i);
 }
 
-void		check_dot(t_vap_data_t *begin)
+/*void		check_dot(t_vap_data_t *begin)
 {
 	t_vap_data_t	*node;
 
@@ -74,7 +74,7 @@ void		check_dot(t_vap_data_t *begin)
 	{
 
 	}
-}
+}*/
 
 void		create_pr_data(t_vap_data_t *begin)
 {
@@ -93,14 +93,15 @@ void		create_pr_data(t_vap_data_t *begin)
 			else
 				begin->pr_data = ftoa(ft_dvigai_tochku(begin->data->f, begin->dot, &i), begin->dot, i);
 		}
-		if (ft_strchr("iduxX", begin->type))
+		if (ft_strchr("idouxX", begin->type))
 		{
-			if ((begin->size_flags)[1])
+			pr_data_for_nbr(begin);
+		/*	if ((begin->size_flags)[1])
 				begin->pr_data = itoa_base(begin->data->l, begin->type);
 			else if ((begin->size_flags)[0])
 				begin->pr_data = itoa_base((begin->size_flags)[0] % 2 ? begin->data->h : begin->data->c, begin->type);
 			else
-				begin->pr_data = itoa_base(begin->data->i, begin->type);
+				begin->pr_data = itoa_base(begin->data->i, begin->type);*/
 		}
 		if (begin->type == 's')
 			begin->pr_data = ft_strdup(begin->data->p);
@@ -136,8 +137,8 @@ void		ft_printf(char *str, ...)   //TODO dont work. need fix.
 }
 
 int		main(int argc, char **argv) {
-	ft_printf("%c %d %.*2$f", 'c', 10, 1.1111);
-	//printf("\n\n\n%hhd", 100500);
+	ft_printf(" %x ", (long)-1);
+	//printf("\nn\n%hhd", 100500);
 	//printf("\n%ld", 9223372036854775098 - 9223372036854775097);
 	//123.456
 	//int i = 0;

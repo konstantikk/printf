@@ -6,7 +6,7 @@
 /*   By: bmiklaz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/25 22:47:42 by bmiklaz           #+#    #+#             */
-/*   Updated: 2019/02/01 23:18:34 by jziemann         ###   ########.fr       */
+/*   Updated: 2019/02/12 22:09:53 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,17 @@ extern char		*g_flags;
 
 typedef union	u_cast
 {
-	long double	F;
-	double		f;
-	long		l;
-	void		*p;
-	int 		i;
-	short		h;
-	char		c;
+	long double		F;
+	double			f;
+	long			l;
+	void			*p;
+	int 			i;
+	short			h;
+	char			c;
+	unsigned        ui;
+	unsigned char	uc;
+	unsigned short	uh;
+	unsigned long	ul;
 }				t_cast;
 
 typedef struct	s_vap_data_s
@@ -75,8 +79,10 @@ t_vap_data_t	*ft_make_vaplist(char *str);
 void			pars_flags(t_vap_data_t *begin);
 void			check_bax(t_vap_data_t *node);
 char			*ft_find_type(char *str);
-char			*itoa_base(long long n, char type);
+char			*itoa_base(unsigned long n, char type, int f);
 long			ft_dvigai_tochku(long double n, int dot, int *intlen);
 char			*ftoa(long n, int dot, int intlen);
+void        	pr_data_for_nbr(t_vap_data_t *node);
+void            read_pr_va_list(t_vap_data_t *begin, va_list args);
 
 #endif
