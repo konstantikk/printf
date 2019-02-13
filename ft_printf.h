@@ -6,7 +6,7 @@
 /*   By: bmiklaz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/25 22:47:42 by bmiklaz           #+#    #+#             */
-/*   Updated: 2019/02/12 22:09:53 by jziemann         ###   ########.fr       */
+/*   Updated: 2019/02/13 18:05:28 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,18 @@
 
 extern char		*g_flags;
 
+typedef struct	s_vector
+{
+	char	*v;
+	size_t	len;
+	size_t	cap;
+}				t_vector;
+
+
+
 typedef union	u_cast
 {
-	long double		F;
+	long double		lf;
 	double			f;
 	long			l;
 	void			*p;
@@ -69,7 +78,7 @@ void			pars_h(t_vap_data_t *node);
 void			pars_l(t_vap_data_t *node);
 void			pars_z(t_vap_data_t *node);
 void			pars_j(t_vap_data_t *node);
-void			pars_L(t_vap_data_t *node);
+void			pars_ll(t_vap_data_t *node);/// pars_L
 void			pars_aposrophe(t_vap_data_t *node);
 void			pars_zero(t_vap_data_t *node);
 void			pars_dot(t_vap_data_t *node);
@@ -84,5 +93,6 @@ long			ft_dvigai_tochku(long double n, int dot, int *intlen);
 char			*ftoa(long n, int dot, int intlen);
 void        	pr_data_for_nbr(t_vap_data_t *node);
 void            read_pr_va_list(t_vap_data_t *begin, va_list args);
+t_vector		*long_pow(char digit, long power);
 
 #endif

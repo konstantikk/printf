@@ -6,15 +6,15 @@
 /*   By: jziemann <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/01 23:01:19 by jziemann          #+#    #+#             */
-/*   Updated: 2019/02/08 12:29:48 by jziemann         ###   ########.fr       */
+/*   Updated: 2019/02/13 17:31:57 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char            *g_flags = "*#-+hlzjL'0.$ 123456789";
+char			*g_flags = "*#-+hlzjL'0.$ 123456789";
 
-void            (*pars_fun[14])(t_vap_data_t *a) =
+void			(*g_pars_fun[14])(t_vap_data_t *a) =
 {
 	pars_star,
 	pars_hash,
@@ -24,7 +24,7 @@ void            (*pars_fun[14])(t_vap_data_t *a) =
 	pars_l,
 	pars_z,
 	pars_j,
-	pars_L,
+	pars_ll,
 	pars_aposrophe,
 	pars_zero,
 	pars_dot,
@@ -38,29 +38,28 @@ char			*ft_find_type(char *str)
 
 	while (ft_strchr(FLAGS, *str))
 	{
-
 		if (*str == '$')
 		{
 			itr = str - 1;
 			while (*itr == '0')
 				--itr;
 			if (!ft_isdigit(*itr) && *itr != '*')
-				break;
+				break ;
 		}
 		str++;
 	}
 	return (str);
 }
 
-t_vap_data_t    *ft_make_vaplist(char *str)
+t_vap_data_t	*ft_make_vaplist(char *str)
 {
-	t_vap_data_t    *begin;
-	t_vap_data_t    *node;
-	char            *itr;
-	int             i;
+	t_vap_data_t	*begin;
+	t_vap_data_t	*node;
+	char			*itr;
+	int				i;
 
 	i = 1;
-	begin = (t_vap_data_t *)ft_memalloc(sizeof(t_vap_data_t));  //TODO
+	begin = (t_vap_data_t *)ft_memalloc(sizeof(t_vap_data_t));  /**TODO**/
 	node = begin;
 	while (*str)
 	{
@@ -68,7 +67,7 @@ t_vap_data_t    *ft_make_vaplist(char *str)
 			return (begin); // TODO ft_free
 		node->ind = i++;
 		node->start = str;
-		itr = ft_find_type(++str); 
+		itr = ft_find_type(++str);
 		node->type = *itr;
 		if (*itr == 'f')
 			node->dot = 6;
@@ -81,10 +80,10 @@ t_vap_data_t    *ft_make_vaplist(char *str)
 			node->next = 0;
 		node = node->next;
 	}
-	return(begin);
+	return (begin);
 }
 
- void            check_bax(t_vap_data_t *node)
+void			check_bax(t_vap_data_t *node)
 {
 	int size_flags[3];
 	int ind;
@@ -103,10 +102,10 @@ t_vap_data_t    *ft_make_vaplist(char *str)
 	}
 }
 
-void            pars_flags(t_vap_data_t *begin)
+void			pars_flags(t_vap_data_t *begin)
 {
-	char    *flags;
-	char    f;
+	char	*flags;
+	char	f;
 
 	while (begin)
 	{
@@ -119,7 +118,7 @@ void            pars_flags(t_vap_data_t *begin)
 			else
 			{
 				f = *(begin->flags);
-				pars_fun[ft_strchr(FLAGS, *(begin->flags)) - FLAGS](begin);
+				g_pars_fun[ft_strchr(FLAGS, *(begin->flags)) - FLAGS](begin);
 				if ((f == '*' || f == '.') && begin->f_star)
 					begin = begin->next;
 			}

@@ -6,7 +6,7 @@
 /*   By: bmiklaz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/24 20:46:52 by bmiklaz           #+#    #+#             */
-/*   Updated: 2019/01/24 20:46:54 by bmiklaz          ###   ########.fr       */
+/*   Updated: 2019/02/13 16:54:11 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,12 @@ void			bax_indexator(t_vap_data_t *node, int i)
 	node->bax = i;
 	if (!(node = node->next))
 		return ;
-	//while (!ft_strchr(node->flags, '$'))
 	while (node->bax == 0)
 	{
-		//node->bax = ++i;
 		if (!node->f_star)
 			node->bax = ++i;
-		if (!(/*node = */node->next))
+		if (!(node->next))
 		{
-			//return ;
 			while (node->ind < i)
 			{
 				create_bax_nod(&node);
@@ -54,10 +51,10 @@ void			bax_indexator(t_vap_data_t *node, int i)
 void			pars_bax(t_vap_data_t *node)
 {
 	int		n;
-	int 	size_flags[3];
+	int		size_flags[3];
 	char	type;
 
-	type  = node->type;
+	type = node->type;
 	n = ft_atoi(node->flags);
 	while (ft_isdigit(*(node->flags)))
 		++(node->flags);

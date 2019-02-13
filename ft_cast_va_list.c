@@ -6,7 +6,7 @@
 /*   By: jziemann <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 21:17:25 by jziemann          #+#    #+#             */
-/*   Updated: 2019/02/12 23:28:57 by jziemann         ###   ########.fr       */
+/*   Updated: 2019/02/13 17:20:50 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void			ft_float_cast(t_vap_data_t *node, va_list args)
 {
 	if ((node->size_flags)[2])
-		node->data->F = va_arg(args, long double);
+		node->data->lf = va_arg(args, long double);
 	else
 		node->data->f = va_arg(args, double);
 }
@@ -25,24 +25,25 @@ void			ft_int_cast(t_vap_data_t *node, va_list args)
 	if ((node->size_flags)[1])
 		node->data->l = va_arg(args, long);
 	else if ((node->size_flags)[0] % 2)
-		node->data->h = va_arg(args, int);//
+		node->data->h = va_arg(args, int);
 	else if ((node->size_flags)[0])
-		node->data->c = va_arg(args, int);///
+		node->data->c = va_arg(args, int);
 	else
 		node->data->i = va_arg(args, int);
-}	
+}
 
 void			ft_unsigned_cast(t_vap_data_t *node, va_list args)
 {
 	if ((node->size_flags)[1])
 		node->data->ul = va_arg(args, unsigned long);
 	else if ((node->size_flags)[0] % 2)
-		node->data->uh = va_arg(args, unsigned int);///
+		node->data->uh = va_arg(args, unsigned int);
 	else if ((node->size_flags)[0])
-		node->data->uc = va_arg(args, unsigned int);///
+		node->data->uc = va_arg(args, unsigned int);
 	else
 		node->data->ui = va_arg(args, unsigned int);
 }
+
 void			read_pr_va_list(t_vap_data_t *begin, va_list args) //TODO
 {
 	while (begin)
@@ -53,9 +54,7 @@ void			read_pr_va_list(t_vap_data_t *begin, va_list args) //TODO
 		if (ft_strchr("id", begin->type))
 			ft_int_cast(begin, args);
 		if (ft_strchr("ouxX", begin->type))
-			 ft_unsigned_cast(begin, args);
-//		if (ft_strchr("DOU", begin->type))
-//			begin->data->l = va_arg(args, long);
+			ft_unsigned_cast(begin, args);
 		if (begin->type == 'c')
 			begin->data->c = va_arg(args, int);
 		if (begin->type == 's')

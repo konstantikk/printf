@@ -6,7 +6,7 @@
 /*   By: jziemann <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 16:49:31 by jziemann          #+#    #+#             */
-/*   Updated: 2019/02/12 23:19:13 by jziemann         ###   ########.fr       */
+/*   Updated: 2019/02/13 18:18:43 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ char		*itoa_base(unsigned long n, char type, int f)
 	size_t	len;
 	char	l;
 
-	//f && n < 0 ?  : :
 	base = find_base(type);
+	len = n;
+	if (type != 'd' && type != 'i')
+		n = len;
 	len = (size_t)count_digits(n, base);
 	str = (f) ? ft_strnew(len + 1) : ft_strnew(len);
 	if (!str)
@@ -53,7 +55,7 @@ char		*itoa_base(unsigned long n, char type, int f)
 	if (!n)
 		str[0] = '0';
 	l = (char)(type == 'x' ? 'a' : 'A');
-	if (f  && (str[0] = '-'))
+	if (f && (str[0] = '-'))
 		len++;
 	while (n)
 	{
@@ -63,16 +65,17 @@ char		*itoa_base(unsigned long n, char type, int f)
 	return (str);
 }
 
-void        pr_data_for_nbr(t_vap_data_t *node)////HATEEEEEEE new union
+void		pr_data_for_nbr(t_vap_data_t *node)
 {
 	int f;
 
 	f = 0;
-	if (node->type == 'i' || node->type == 'd')//////////////////////////////////////////////////////////
+	if (node->type == 'i' || node->type == 'd')
 	{
 		if ((node->size_flags)[1])
-		{		if (node->data->l < 0 && (node->data->l = -node->data->l))
-					f = 1;
+		{
+			if (node->data->l < 0 && (node->data->l = -node->data->l))
+				f = 1;
 			node->pr_data = itoa_base(node->data->l, node->type, f);
 		}
 		else if ((node->size_flags)[0])
@@ -93,10 +96,10 @@ void        pr_data_for_nbr(t_vap_data_t *node)////HATEEEEEEE new union
 	else
 	{
 		if ((node->size_flags)[1])
-			 node->pr_data = itoa_base(node->data->ul, node->type, f);
-		 else if ((node->size_flags)[0])
-			 node->pr_data = itoa_base((node->size_flags)[0] % 2 ? node->data->uh : node->data->uc, node->type, f);
-		 else
-			 node->pr_data = itoa_base(node->data->ui, node->type, f);
+			node->pr_data = itoa_base(node->data->ul, node->type, f);
+		else if ((node->size_flags)[0])
+			node->pr_data = itoa_base((node->size_flags)[0] % 2 ? node->data->uh : node->data->uc, node->type, f);
+		else
+			node->pr_data = itoa_base(node->data->ui, node->type, f);
 	}
 }
