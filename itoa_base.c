@@ -6,7 +6,7 @@
 /*   By: jziemann <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 16:49:31 by jziemann          #+#    #+#             */
-/*   Updated: 2019/02/13 18:18:43 by jziemann         ###   ########.fr       */
+/*   Updated: 2019/02/16 21:19:12 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static int	find_base(char type)
 		return (10);
 	else if (type == 'x' || type == 'X')
 		return (16);
+	else if (type == 'b')
+		return (2);
 	else
 		return (8);
 }
@@ -37,32 +39,28 @@ static int	count_digits(unsigned long n, int base)
 	return (count);
 }
 
-char		*itoa_base(unsigned long n, char type, int f)
+t_vector	*itoa_base(unsigned long n, char type, int f)
 {
-	char	*str;
 	int		base;
-	size_t	len;
 	char	l;
+	t_vector	*vec;
 
 	base = find_base(type);
-	len = n;
-	if (type != 'd' && type != 'i')
-		n = len;
-	len = (size_t)count_digits(n, base);
-	str = (f) ? ft_strnew(len + 1) : ft_strnew(len);
-	if (!str)
-		return (NULL);
+	vec =  makevec();
+	if (base == 2 && f)
+		n =	(~n) + 1;
 	if (!n)
-		str[0] = '0';
+		pushbackvec(vec, '0');
 	l = (char)(type == 'x' ? 'a' : 'A');
-	if (f && (str[0] = '-'))
-		len++;
 	while (n)
 	{
-		str[--len] = (char)(n % base < 10 ? n % base + '0' : n % base % 10 + l);
+		pushbackvec(vec, (char)(n % base < 10 ? n % base + '0' : n % base % 10 + l));
 		n = n / base;
 	}
-	return (str);
+	if (f)
+		pushbackvec(vec,'-');
+	ft_strrev(vec->v);
+	return (vec);
 }
 
 void		pr_data_for_nbr(t_vap_data_t *node)
@@ -70,7 +68,7 @@ void		pr_data_for_nbr(t_vap_data_t *node)
 	int f;
 
 	f = 0;
-	if (node->type == 'i' || node->type == 'd')
+	if (node->type == 'i' || node->type == 'd' || node->type == 'b')
 	{
 		if ((node->size_flags)[1])
 		{

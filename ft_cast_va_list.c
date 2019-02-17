@@ -6,7 +6,7 @@
 /*   By: jziemann <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 21:17:25 by jziemann          #+#    #+#             */
-/*   Updated: 2019/02/13 17:20:50 by jziemann         ###   ########.fr       */
+/*   Updated: 2019/02/17 04:34:17 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void			read_pr_va_list(t_vap_data_t *begin, va_list args) //TODO
 		begin->data = (t_cast *)malloc(16);
 		if (begin->type == 'f')
 			ft_float_cast(begin, args);
-		if (ft_strchr("id", begin->type))
+		if (ft_strchr("idb", begin->type))
 			ft_int_cast(begin, args);
 		if (ft_strchr("ouxX", begin->type))
 			ft_unsigned_cast(begin, args);
@@ -60,7 +60,7 @@ void			read_pr_va_list(t_vap_data_t *begin, va_list args) //TODO
 		if (begin->type == 's')
 			begin->data->p = va_arg(args, char *);
 		if (begin->type == 'p')
-			begin->data->p = va_arg(args, void *);
+			begin->data->ul = (unsigned long)va_arg(args, void *);
 		begin = begin->next;
 	}
 }
