@@ -6,7 +6,7 @@
 /*   By: jziemann <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 16:49:31 by jziemann          #+#    #+#             */
-/*   Updated: 2019/02/16 21:19:12 by jziemann         ###   ########.fr       */
+/*   Updated: 2019/02/20 05:43:19 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	find_base(char type)
 {
 	if (ft_strchr("diu", type))
 		return (10);
-	else if (type == 'x' || type == 'X')
+	else if (type == 'x' || type == 'X' || type == 'p')
 		return (16);
 	else if (type == 'b')
 		return (2);
@@ -24,80 +24,76 @@ static int	find_base(char type)
 		return (8);
 }
 
-static int	count_digits(unsigned long n, int base)
+void		flags_mnpl(t_vap_l *node, t_string *vec, unsigned copy, int f)
 {
-	int	count;
-
-	count = 0;
-	if (n == 0)
-		return (1);
-	while (n)
+	if (node->f_zero && node->f_dot)
+		++node->f_zero;
+	if ((size_t)node->dot > vec->len)
+		vec_fast_pb(vec, '0', node->dot - vec->len);
+	if ((size_t)node->width > vec->len)
+		width_mnpl(node, vec, copy, f);
+	else
 	{
-		n = n / base;
-		++count;
+		hash_mnpl(node, vec, copy);
+		if (f)
+			vec_fast_pb(vec, '-', 1);
 	}
-	return (count);
+	if (node->type == 'i' || node->type == 'd')
+		spplus_mnpl(node, vec, copy, f);
 }
 
-t_vector	*itoa_base(unsigned long n, char type, int f)
+t_string	*htoa(int n, t_vap_l *node)
 {
-	int		base;
-	char	l;
-	t_vector	*vec;
+	t_string		*vec;
+	int				f;
+	int				copy;
 
-	base = find_base(type);
-	vec =  makevec();
-	if (base == 2 && f)
-		n =	(~n) + 1;
-	if (!n)
-		pushbackvec(vec, '0');
-	l = (char)(type == 'x' ? 'a' : 'A');
-	while (n)
+	f = 0;
+	if (n < 0 && (n = -n))
+		f = 1;
+	copy = n;
+	vec = makevec();
+	if ((node->f_dot && node->dot != 0) || copy != 0 || !node->f_dot)
 	{
-		pushbackvec(vec, (char)(n % base < 10 ? n % base + '0' : n % base % 10 + l));
-		n = n / base;
+		if (!n)
+			vec_fast_pb(vec, '0', 1);
+		while (n)
+		{
+			vec_fast_pb(vec, n % 10 + '0', 1);
+			n /= 10;
+		}
 	}
-	if (f)
-		pushbackvec(vec,'-');
-	ft_strrev(vec->v);
+	flags_mnpl(node, vec, copy, f);
+	ft_strrev(vec->s);
+	vec->cap = vec->len + 1;
 	return (vec);
 }
 
-void		pr_data_for_nbr(t_vap_data_t *node)
+t_string	*itoa_base(unsigned long n, t_vap_l *node, int f)
 {
-	int f;
+	int				base;
+	char			l;
+	t_string		*vec;
+	unsigned		copy;
 
-	f = 0;
-	if (node->type == 'i' || node->type == 'd' || node->type == 'b')
+	copy = n;
+	base = find_base(node->type);
+	vec = makevec();
+	base == 2 && f && (n = (~n + 1));
+	if ((node->f_dot && node->dot != 0) || copy != 0 || !node->f_dot)
 	{
-		if ((node->size_flags)[1])
+		if (!n)
+			vec_fast_pb(vec, '0', 1);
+		l = (char)(node->type == 'x' || node->type == 'p' ? 'a' : 'A');
+		while (n)
 		{
-			if (node->data->l < 0 && (node->data->l = -node->data->l))
-				f = 1;
-			node->pr_data = itoa_base(node->data->l, node->type, f);
-		}
-		else if ((node->size_flags)[0])
-		{
-			if ((node->size_flags)[0] % 2 && node->data->c < 0 && (node->data->c = -node->data->c))
-				f = 1;
-			else if (node->data->h < 0 && (node->data->h = -node->data->h))
-				f = 1;
-			node->pr_data = itoa_base((node->size_flags)[0] % 2 ? node->data->h : node->data->c, node->type, f);
-		}
-		else
-		{
-			if (node->data->i < 0 && (node->data->i = -node->data->i))
-				f = 1;
-			node->pr_data = itoa_base(node->data->i, node->type, f);
+			vec_fast_pb(vec, (char)(n % base < 10 ? n % base + '0'
+												: n % base % 10 + l), 1);
+			n = n / base;
 		}
 	}
-	else
-	{
-		if ((node->size_flags)[1])
-			node->pr_data = itoa_base(node->data->ul, node->type, f);
-		else if ((node->size_flags)[0])
-			node->pr_data = itoa_base((node->size_flags)[0] % 2 ? node->data->uh : node->data->uc, node->type, f);
-		else
-			node->pr_data = itoa_base(node->data->ui, node->type, f);
-	}
+	flags_mnpl(node, vec, copy, f);
+	ft_strrev(vec->s);
+	vec->cap = vec->len + 1;
+	return (vec);
 }

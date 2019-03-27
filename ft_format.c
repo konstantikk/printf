@@ -12,31 +12,31 @@
 
 #include "ft_printf.h"
 
-void	pars_h(t_vap_data_t *node)
+void	pars_h(t_vap_l *node)
 {
 	node->size_flags[0] += 1;
 	++(node->flags);
 }
 
-void	pars_l(t_vap_data_t *node)
+void	pars_l(t_vap_l *node)
 {
 	node->size_flags[1] += 1;
 	++(node->flags);
 }
 
-void	pars_z(t_vap_data_t *node)
+void	pars_z(t_vap_l *node)
 {
 	node->size_flags[1] += 2;
 	++(node->flags);
 }
 
-void	pars_j(t_vap_data_t *node)
+void	pars_j(t_vap_l *node)
 {
 	node->size_flags[1] += 2;
 	++(node->flags);
 }
 
-void	pars_ll(t_vap_data_t *node)
+void	pars_ll(t_vap_l *node)
 {
 	node->size_flags[2] += 1;
 	++(node->flags);

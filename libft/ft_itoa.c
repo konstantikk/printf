@@ -6,17 +6,17 @@
 /*   By: bmiklaz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 22:39:20 by bmiklaz           #+#    #+#             */
-/*   Updated: 2018/11/21 22:40:18 by bmiklaz          ###   ########.fr       */
+/*   Updated: 2019/02/18 23:50:31 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_itoa(int n)
+char	*ft_itoa(long n)
 {
-	char	*r;
-	int		i;
-	int		k;
+	char		*r;
+	long		i;
+	long		k;
 
 	i = 1;
 	k = 1;

@@ -6,7 +6,7 @@
 /*   By: bmiklaz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 22:39:20 by bmiklaz           #+#    #+#             */
-/*   Updated: 2018/11/21 22:40:18 by bmiklaz          ###   ########.fr       */
+/*   Updated: 2019/02/18 23:51:24 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int				ft_isalpha(int c);
 int				ft_isascii(int c);
 int				ft_isdigit(int c);
 int				ft_isprint(int c);
-char			*ft_itoa(int n);
+char			*ft_itoa(long n);
 void			*ft_memalloc(size_t size);
 void			*ft_memccpy(void *dst, const void *src, int c, size_t n);
 void			*ft_memchr(const void *s, int c, size_t n);

@@ -12,12 +12,12 @@
 
 #include "ft_printf.h"
 
-void			create_bax_nod(t_vap_data_t **node)
+void			create_bax_nod(t_vap_l **node)
 {
 	int i;
 
 	i = (*node)->ind + 1;
-	(*node)->next = (t_vap_data_t *)ft_memalloc(sizeof(t_vap_data_t));
+	(*node)->next = (t_vap_l *)ft_memalloc(sizeof(t_vap_l));
 	*node = (*node)->next;
 	(*node)->type = 'd';
 	(*node)->flags = ft_strnew(0);
@@ -25,7 +25,7 @@ void			create_bax_nod(t_vap_data_t **node)
 	(*node)->f_star++;
 }
 
-void			bax_indexator(t_vap_data_t *node, int i)
+void			bax_indexator(t_vap_l *node, int i)
 {
 	node->bax = i;
 	if (!(node = node->next))
@@ -48,10 +48,9 @@ void			bax_indexator(t_vap_data_t *node, int i)
 	}
 }
 
-void			pars_bax(t_vap_data_t *node)
+void			pars_bax(t_vap_l *node)
 {
 	int		n;
-	int		size_flags[3];
 	char	type;
 
 	type = node->type;
@@ -76,69 +75,43 @@ void			pars_bax(t_vap_data_t *node)
 		node->width = n;
 }
 
-void			create_star_nod(t_vap_data_t *node, int n)
+void			create_star_nod(t_vap_l *node, int n)
 {
-	t_vap_data_t *nextnode;
+	t_vap_l *nextnode;
 
 	if (!n)
 	{
 		nextnode = node->next;
-		node->next = (t_vap_data_t *)malloc(sizeof(t_vap_data_t));
-		ft_memcpy(node->next, node, sizeof(t_vap_data_t));
+		node->next = (t_vap_l *)malloc(sizeof(t_vap_l));
+		ft_memcpy(node->next, node, sizeof(t_vap_l));
 		node->next->next = nextnode;
 		node->f_star = 1;
 		node->type = 'd';
-		if (*(node->flags - 2) != '.')
-			node->next->width = -node->ind;
-		else
+		if (node->f_dot && *(node->flags - 2) == '.')
 			node->next->dot = -node->ind;
+		else
+			node->next->width = -node->ind;
 		node->flags = ft_strnew(0);
 		while ((node = node->next))
 			++(node->ind);
 		return ;
 	}
 	while (node->ind < n)
-	{
-		if (node->next)
-			node = node->next;
-		else
-			create_bax_nod(&node);
-	}
+		(node->next) ? node = node->next : create_bax_nod(&node);
 }
 
-void			pars_star(t_vap_data_t *node)
+void			help_pars_star(t_vap_l *node, int ind)
 {
-	int i;
-	int ind;
+	int	i;
 
 	i = 0;
-	ind = ft_atoi(++(node->flags));
-	if (ind == 0)
+	if (ft_isdigit(*node->flags))
 	{
-		if (ft_isdigit(*node->flags))
-		{
-			while ((node->flags)[i] == '0')
-				++i;
-			if (*node->flags == '$')
-				node->flags += i + 1;
-		}
-		else
-			create_star_nod(node, ind);
+		while ((node->flags)[i] == '0')
+			++i;
+		if (*node->flags == '$')
+			node->flags += i + 1;
 	}
 	else
-	{
-		while (ft_isdigit((node->flags)[i]))
-			++i;
-		if ((node->flags)[i] != '$')
-		{
-			create_star_nod(node, 0);
-			return ;
-		}
-		if (*(node->flags - 2) != '.')
-			node->width = -ind;
-		else
-			node->dot = -ind;
-		node->flags += i + 1;
 		create_star_nod(node, ind);
-	}
 }

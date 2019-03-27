@@ -1,34 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_precision.c                                     :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jziemann <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/01 23:12:48 by jziemann          #+#    #+#             */
-/*   Updated: 2019/02/13 16:49:47 by jziemann         ###   ########.fr       */
+/*   Created: 2019/02/26 22:13:42 by jziemann          #+#    #+#             */
+/*   Updated: 2019/03/12 22:39:32 by jziemann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void		pars_aposrophe(t_vap_l *node)
+int main ()
 {
-	if (!node->f_apostrophe)
-		++(node->f_apostrophe);
-	++(node->flags);
-}
-
-void		pars_dot(t_vap_l *node)
-{
-	if (!node->f_dot)
-		(node->f_dot) = 1;
-	if (*(++(node->flags)) == '*')
-	{
-		pars_star(node);
-		return ;
-	}
-	node->dot = ft_atoi(node->flags);
-	while (ft_isdigit(*(node->flags)))
-		++(node->flags);
+	ft_printf("%.32d %d\n%f", 0x7700, 12, 23.8);
+//	ft_printf("%0#x\n", 0x7700) ;
+//	ft_printf("%0#x\n", 0x11 /2);
+	return (0);
 }
